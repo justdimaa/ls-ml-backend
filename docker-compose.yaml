@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: unless-stopped
+    environment: # edit the env variables either here, or rename the .env.example file to .env and change the vars there
+      - RUST_LOG=${RUST_LOG}
+      - LABEL_STUDIO_URL=${LABEL_STUDIO_URL}
+      - LABEL_STUDIO_TOKEN=${LABEL_STUDIO_TOKEN}
+      - ML_BACKEND_ADDR=${ML_BACKEND_ADDR}
+      - ML_BACKEND_PORT=${ML_BACKEND_PORT}
+      - ML_LABELS=${ML_LABELS}
+    ports:
+      - 9090:9090
+    volumes:
+      - ./models:/models

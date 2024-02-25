@@ -1,0 +1,12 @@
+# cargo
+/target
+
+# project
+/lib
+/models
+
+# nix
+/.direnv
+
+# misc
+**/.env
