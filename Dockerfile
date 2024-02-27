@@ -1,22 +1,25 @@
 FROM rust:1.76 as build
 
-# create a new empty shell project
-# RUN USER=root cargo new --bin ml-backend
 WORKDIR /app
 
 # copy over your manifests
 COPY ./Cargo.lock ./Cargo.lock
 COPY ./Cargo.toml ./Cargo.toml
 
+# create dummy main file
+RUN mkdir src && echo "fn main() { println!(\"build is broken\") }" > ./src/main.rs
+
 # this build step will cache your dependencies
-# RUN cargo build --release
-# RUN rm -f src/*.rs
+RUN cargo build --release
 
 # copy your source tree
 COPY ./src ./src
 
+# the last modified attribute of main.rs needs to be updated manually,
+# otherwise cargo won't rebuild it.
+RUN touch -a -m ./src/main.rs
+
 # build for release
-# RUN rm -f ./target/release/deps/ml-backend*
 RUN cargo build --release
 
 # our final base
